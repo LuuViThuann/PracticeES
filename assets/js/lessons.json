@@ -1,0 +1,156 @@
+[
+    {
+      "id": 31,
+      "title": "Listening - Level 3 - File 31 - Page 27",
+      "audio": "assets/audio/track31.mp3",
+      "image": "assets/image/track31.png",
+      "answer": ["B", "A", "B", "A" , "C"]
+    },
+   
+    {
+        "id": 34,
+        "title": "Listening - Level 3 - File 34 - Page 31",
+        "audio": "assets/audio/track34.mp3",
+        "image": "assets/image/track34.png",
+        "answer": ["B", "B", "A", "B" , "C"]
+      },
+
+      {
+        "id": 150,
+        "title": "Listening - Level 3 - File 150 - Page 128",
+        "audio": "assets/audio/track150.mp3",
+        "image": "assets/image/track150.png",
+        "answer": ["B"]
+      },
+
+      {
+        "id": 151,
+        "title": "Listening - Level 3 - File 151 - Page 128",
+        "audio": "assets/audio/track151.mp3",
+        "image": [
+            "assets/image/track151.png",
+            "assets/image/track1511.png"
+          ],
+        "answer": ["C", "A", "A", "B"]
+      },
+      {
+        "id": 4,
+        "title": "Listening - Level 3 - File 04 - Page 19 - WB",
+        "audio": "assets/audio/file4.mp3",
+        "image": "assets/image/f4.png",
+        "answer": ["B" , "C" , "B" , "C" , "C"]
+      },
+      {
+        "id": 7,
+        "title": "Listening - Level 3 - File 07 - Page 31 - WB",
+        "audio": "assets/audio/file7.mp3",
+        "image": "assets/image/f7.png",
+        "answer": ["11:30" , "beach" , "900" , "kayaking" , "murphy"]
+      },
+      {
+        "id": 8,
+        "title": "Listening - Level 3 - File 08 - Page 35 - WB",
+        "audio": "assets/audio/file8.mp3",
+        "image": "assets/image/f8.png",
+        "answer": ["B" , "C" , "C" , "A" , "B"]
+      },
+      {
+        "id": 12,
+        "title":"Listening - Level 3 - File 12 - Page 50 - WB",
+        "audio": "assets/audio/file12.mp3",
+        "image": "assets/image/f12.png",
+        "answer": ["C" , "B" , "A" , "B" , "C"]
+      },
+      {
+        "id": 13,
+        "title": "Listening - Level 3 - File 13 - Page 55 - WB",
+        "audio": "assets/audio/file13.mp3",
+        "image": "assets/image/f13.png",
+        "questions": [
+          {
+            "type": "checkbox",
+            "title": "Listen to a TV interview with a rock climber and tich (v) the things they talk about",
+            "options": [
+              {"label": "A", "value": "A", "correct": false},
+              {"label": "B", "value": "B", "correct": true},
+              {"label": "C", "value": "C", "correct": true},
+              {"label": "D", "value": "D", "correct": false},
+              {"label": "E", "value": "E", "correct": true}
+            ]
+          },
+          {
+            "type": "text",
+            "title": "Nhập Right or Wrong",
+            "answers": ["wrong", "wrong", "right", "right", "wrong", "right", "right"]
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "title": "Listening - Level 3 - File 15 - Page 63 - WB",
+        "audio": "assets/audio/file15.mp3",
+        "image": "assets/image/f15.png",
+        "questions": [
+          {
+            "type": "text",
+            "title": "Part 1 : ",
+            "answer": ["C"]
+          },
+          {
+            "type": "text",
+            "title": "Part 2 : Nhập Right or Wrong",
+            "answers": ["wrong", "wrong", "right", "wrong", "wrong", "wrong", "right", "right", "right", "wrong"]
+          }
+        ]
+      },
+      {
+        "id": 94,
+        "title":"Listening - Level 3 - File 94 - Page 71",
+        "audio": "assets/audio/file94.mp3",
+        "image": "assets/image/f94.png",
+        "answer": ["B" , "C" , "C" , "C" , "A"]
+      },
+      {
+        "id": 23,
+        "title":"Listening - Level 3 - File 23 - Page 23",
+        "audio": "assets/audio/file23.mp3",
+        "image": "assets/image/f23.png",
+        "answer": ["wrong" , "right" , "wrong" , "wrong" , "right", "wrong", "right", "right"]
+      },
+      {
+        "id": 56,
+        "title":"Listening - Level 3 - File 56 - Page 45",
+        "audio": "assets/audio/file56.mp3",
+        "image": "assets/image/f56.png",
+        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+      },
+      {
+        "id": 116,
+        "title":"Listening - Level 3 - File 116 - Page 89",
+        "audio": "assets/audio/file116.mp3",
+        "image": "assets/image/f116.png",
+        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+      },
+      {
+        "id": 153,
+        "title":"Listening - Level 3 - File 153 - Page 129",
+        "audio": "assets/audio/file153.mp3",
+        "image": "assets/image/f153.png",
+        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+      },
+      {
+        "id": 155,
+        "title":"Listening - Level 3 - File 155 - Page 130",
+        "audio": "assets/audio/file155.mp3",
+        "image": "assets/image/f155.png",
+        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+      },
+      {
+        "id": 157,
+        "title":"Listening - Level 3 - File 157 - Page 131",
+        "audio": "assets/audio/file157.mp3",
+        "image": "assets/image/f157.png",
+        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+      }
+  ]
+  

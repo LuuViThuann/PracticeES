@@ -1,0 +1,328 @@
+/* Existing animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+@keyframes buttonHover {
+    0% { transform: scale(1); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+    100% { transform: scale(1.05); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); }
+}
+@keyframes inputFocus {
+    from { transform: scale(1); box-shadow: 0 0 0 rgba(59, 130, 246, 0); }
+    to { transform: scale(1.02); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+}
+
+/* Animation classes */
+.animate-result-correct {
+    animation: fadeIn 0.5s ease-in-out;
+}
+.animate-result-wrong {
+    animation: fadeIn 0.5s ease-in-out, shake 0.5s ease-in-out;
+}
+
+/* Lesson card styling with selection effect */
+.lesson-card {
+    transition: all 0.3s ease;
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    border: 2px solid transparent; /* Default border */
+}
+
+.lesson-card:hover {
+    transform: translateY(-5px);
+    border-color: #3b82f6; /* Blue border on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.lesson-card.selected {
+    border-color: #2563eb; /* Darker blue for selected state */
+    background-color: #eff6ff; /* Light blue background for selected */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.lesson-card .headphone-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #3b82f6;
+    font-size: 1.5rem;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.lesson-card:hover .headphone-icon,
+.lesson-card.selected .headphone-icon {
+    opacity: 1;
+}
+
+/* Main container adjustments */
+#lessonPage {
+    padding: 2rem;
+}
+
+/* Styling for the right column (audio and answers) */
+.lg\:w-1\/3 {
+    padding-left: 1.5rem;
+}
+
+/* Separator between images and answers */
+#lessonImages {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 1rem;
+}
+
+/* Styling for answer inputs and sections */
+#answerInputs {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+#answerInputs > div {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+#answerInputs > div::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 12px 12px 0 0;
+}
+
+#answerInputs > div:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #3b82f6;
+}
+
+#answerInputs h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.answer-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.answer-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+    animation: inputFocus 0.3s ease-in-out forwards;
+    transform: scale(1.02);
+}
+
+/* Checkbox styling */
+.answer-checkbox {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 12px;
+    accent-color: #3b82f6;
+    transition: all 0.2s ease;
+}
+
+.answer-checkbox:checked {
+    transform: scale(1.1);
+    border-color: #3b82f6;
+    background-color: #3b82f6;
+}
+
+/* Checkbox container */
+.space-y-2 > label {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    transition: background-color 0.2s ease;
+    border-radius: 6px;
+    margin-bottom: 0.25rem;
+}
+
+.space-y-2 > label:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+    padding-left: 0.5rem;
+}
+
+/* Styling for buttons */
+.controls {
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.control-btn {
+    position: relative;
+    overflow: hidden;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: 0.6s;
+}
+
+.control-btn:hover::before {
+    left: 100%;
+}
+
+.control-btn:hover {
+    animation: buttonHover 0.3s ease forwards;
+}
+
+/* Remove box-shadow from check-btn */
+.check-btn {
+    background: linear-gradient(45deg, #2563eb, #60a5fa);
+    color: white;
+    box-shadow: none; /* Loại bỏ bóng đổ */
+}
+
+.reset-btn {
+    background: linear-gradient(45deg, #6b7280, #9ca3af);
+    color: white;
+}
+
+.back-btn {
+    background: linear-gradient(45deg, #d1d5db, #e5e7eb);
+    color: #1f2937;
+}
+
+/* Audio styling */
+#lessonAudio {
+    margin-top: 0.5rem;
+}
+
+/* Result styling */
+#result {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix footer at the bottom */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1f2937;
+    color: white;
+    text-align: center;
+    padding: 12px 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 0.875rem;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .flex.flex-col.lg\:flex-row {
+        flex-direction: column;
+    }
+    
+    .lg\:w-2\/3, .lg\:w-1\/3 {
+        width: 100%;
+    }
+    
+    .lg\:w-1\/3 {
+        padding-left: 0;
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    #lessonPage {
+        padding: 1rem;
+    }
+    
+    #answerInputs > div {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    #answerInputs h3 {
+        font-size: 1.1rem;
+    }
+    
+    .answer-input {
+        padding: 10px 12px;
+        margin-bottom: 0.75rem;
+    }
+    
+    .control-btn {
+        width: 100%;
+        margin-bottom: 0.75rem;
+        padding: 12px 20px;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    #answerInputs {
+        margin-top: 1.5rem;
+    }
+    
+    #lessonImages {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Additional spacing for mobile landscape */
+@media (max-width: 768px) and (orientation: landscape) {
+    #answerInputs {
+        margin-top: 1rem;
+    }
+    
+    .controls {
+        margin-top: 1rem;
+    }
+}
