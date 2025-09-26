@@ -233,6 +233,11 @@
     color: #1f2937;
 }
 
+.subtitle-btn {
+    background: linear-gradient(45deg, #16a34a, #22c55e);
+    color: white;
+}
+
 /* Audio styling */
 #lessonAudio {
     margin-top: 0.5rem;
@@ -244,6 +249,29 @@
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Subtitle styling */
+#subtitleDisplay {
+    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#subtitleDisplay:not(.hidden) {
+    max-height: 500px;
+}
+
+#subtitleDisplay h3 {
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#subtitleText {
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
 }
 
 /* Fix footer at the bottom */
@@ -313,6 +341,11 @@ footer {
     
     #lessonImages {
         margin-bottom: 1.5rem;
+    }
+
+    .subtitle-btn {
+        width: 100%;
+        margin-bottom: 1rem;
     }
 }
 

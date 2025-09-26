@@ -8,13 +8,14 @@
   <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/150845/isolated/preview/333bdf231eba2185ef3e211bb541c09f-audio-headphones-icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans text-gray-800">
     <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 shadow-lg">
         <div class="flex flex-col sm:flex-row items-center justify-center text-center gap-3 px-4">
-          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+          <img src="assets/image/dnc.jpg" 
                alt="logo" 
-               class="w-12 sm:w-14">
+               class="w-12 sm:w-14 rounded-full object-cover">
           <h1 class="text-2xl sm:text-3xl font-bold leading-snug">
             Practice Listening to English
           </h1>
@@ -27,6 +28,10 @@
 
     <!-- Trang chi tiết -->
     <div id="lessonPage" class="hidden bg-white rounded-2xl p-6 shadow-xl">
+      <div id="subtitleDisplay" class="mt-6 hidden p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Phụ đề:</h3>
+        <pre id="subtitleText" class="text-sm text-gray-600 whitespace-pre-wrap overflow-auto max-h-60"></pre>
+      </div>
       <div class="flex flex-col lg:flex-row gap-6">
         <div class="lg:w-2/3">
           <h2 id="lessonTitle" class="text-2xl font-semibold text-blue-600 mb-4"></h2>
@@ -36,6 +41,11 @@
           <div class="flex items-center mb-4">
             <i class="fas fa-headphones text-blue-600 text-2xl mr-2"></i>
             <audio id="lessonAudio" controls class="w-full"></audio>
+          </div>
+          <div id="subtitleToggle" class="mb-4 hidden">
+            <button id="toggleSubtitles" onclick="toggleSubtitles()" class="control-btn subtitle-btn text-white px-6 py-3 rounded-lg font-semibold shadow-md w-full bg-green-600 hover:bg-green-700">
+              <i class="fas fa-closed-captioning mr-2"></i>Xem phụ đề
+            </button>
           </div>
           <div id="answerInputs" class="space-y-4"></div>
           <div class="controls flex flex-col sm:flex-row gap-4 mt-6">
@@ -47,16 +57,18 @@
           <div id="result" class="mt-6 p-4 rounded-lg"></div>
         </div>
       </div>
+    
     </div>
   </div>
 
   <footer class="text-center py-4 text-gray-600">
-    <p>© 2025 Practice Listening to English - LVT - TOM</p>
+    <p>© 2025 Practice Listening to English - Thuận phần mềm - DNC</p>
   </footer>
 
   <script>
     let lessons = [];
     let currentLesson = null;
+    let isShowingSubtitles = false;
   
     const lessonList = document.getElementById("lessonList");
     const lessonPage = document.getElementById("lessonPage");
@@ -65,6 +77,10 @@
     const lessonAudio = document.getElementById("lessonAudio");
     const answerInputs = document.getElementById("answerInputs");
     const result = document.getElementById("result");
+    const subtitleToggle = document.getElementById("subtitleToggle");
+    const subtitleDisplay = document.getElementById("subtitleDisplay");
+    const subtitleText = document.getElementById("subtitleText");
+    const toggleSubtitlesBtn = document.getElementById("toggleSubtitles");
   
     // Load dữ liệu từ lessons.json
     fetch("assets/js/lessons.json")
@@ -93,7 +109,7 @@
       currentLesson = lessons[index];
       lessonList.classList.add("hidden");
       lessonPage.classList.remove("hidden");
-  
+
       document.querySelectorAll('.lesson-card').forEach(card => card.classList.remove('selected'));
       document.querySelectorAll('.lesson-card')[index].classList.add('selected');
   
@@ -101,6 +117,9 @@
       lessonAudio.src = currentLesson.audio;
       result.textContent = "";
       result.className = "mt-6 p-4 rounded-lg";
+      subtitleToggle.classList.add("hidden");
+      subtitleDisplay.classList.add("hidden");
+      isShowingSubtitles = false;
   
       // Render images
       lessonImages.innerHTML = "";
@@ -198,6 +217,50 @@
           });
         }
       }
+
+      // Check for subtitles
+      if (currentLesson.subtitles) {
+        subtitleToggle.classList.remove("hidden");
+      }
+    }
+
+    function toggleSubtitles() {
+      isShowingSubtitles = !isShowingSubtitles;
+      if (isShowingSubtitles) {
+        loadSubtitles();
+        subtitleDisplay.classList.remove("hidden");
+        toggleSubtitlesBtn.innerHTML = '<i class="fas fa-closed-captioning mr-2"></i>Ẩn phụ đề';
+        Swal.fire({
+          title: 'Phụ đề đã được bật !',
+          text: 'Bạn có thể xem phụ đề cho bài học này bên trên.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } else {
+        subtitleDisplay.classList.add("hidden");
+        toggleSubtitlesBtn.innerHTML = '<i class="fas fa-closed-captioning mr-2"></i>Xem phụ đề';
+      }
+    }
+
+    function loadSubtitles() {
+      if (!currentLesson.subtitles) return;
+      fetch(currentLesson.subtitles)
+        .then(res => res.text())
+        .then(data => {
+          subtitleText.textContent = data;
+        })
+        .catch(err => {
+          console.error("Lỗi tải phụ đề:", err);
+          subtitleText.textContent = "Không thể tải phụ đề.";
+          Swal.fire({
+            title: 'Lỗi!',
+            text: 'Không thể tải phụ đề.',
+            icon: 'error',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        });
     }
   
     function checkAnswer() {
@@ -292,9 +355,6 @@
       lessonPage.classList.add("hidden");
       lessonList.classList.remove("hidden");
     }
-
-
-
 
     (function lockDevTools() {
       document.addEventListener('contextmenu', function(e) { e.preventDefault(); });

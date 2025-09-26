@@ -4,6 +4,7 @@
       "title": "Listening - Level 3 - File 31 - Page 27",
       "audio": "assets/audio/track31.mp3",
       "image": "assets/image/track31.png",
+      "subtitles": "assets/srt/track31.srt",
       "answer": ["B", "A", "B", "A" , "C"]
     },
    
@@ -12,6 +13,7 @@
         "title": "Listening - Level 3 - File 34 - Page 31",
         "audio": "assets/audio/track34.mp3",
         "image": "assets/image/track34.png",
+        "subtitles": "assets/srt/track34.srt",
         "answer": ["B", "B", "A", "B" , "C"]
       },
 
@@ -20,6 +22,7 @@
         "title": "Listening - Level 3 - File 150 - Page 128",
         "audio": "assets/audio/track150.mp3",
         "image": "assets/image/track150.png",
+        "subtitles": "assets/srt/track150.srt",
         "answer": ["B"]
       },
 
@@ -31,6 +34,7 @@
             "assets/image/track151.png",
             "assets/image/track1511.png"
           ],
+          "subtitles": "assets/srt/track151.srt",
         "answer": ["C", "A", "A", "B"]
       },
       {
@@ -38,6 +42,7 @@
         "title": "Listening - Level 3 - File 04 - Page 19 - WB",
         "audio": "assets/audio/file4.mp3",
         "image": "assets/image/f4.png",
+        "subtitles": "assets/srt/file4.srt",
         "answer": ["B" , "C" , "B" , "C" , "C"]
       },
       {
@@ -45,6 +50,7 @@
         "title": "Listening - Level 3 - File 07 - Page 31 - WB",
         "audio": "assets/audio/file7.mp3",
         "image": "assets/image/f7.png",
+        "subtitles": "assets/srt/file7.srt",
         "answer": ["11:30" , "beach" , "900" , "kayaking" , "murphy"]
       },
       {
@@ -52,6 +58,7 @@
         "title": "Listening - Level 3 - File 08 - Page 35 - WB",
         "audio": "assets/audio/file8.mp3",
         "image": "assets/image/f8.png",
+        "subtitles": "assets/srt/file8.srt",
         "answer": ["B" , "C" , "C" , "A" , "B"]
       },
       {
@@ -59,6 +66,7 @@
         "title":"Listening - Level 3 - File 12 - Page 50 - WB",
         "audio": "assets/audio/file12.mp3",
         "image": "assets/image/f12.png",
+        "subtitles": "assets/srt/file12.srt",
         "answer": ["C" , "B" , "A" , "B" , "C"]
       },
       {
@@ -66,6 +74,7 @@
         "title": "Listening - Level 3 - File 13 - Page 55 - WB",
         "audio": "assets/audio/file13.mp3",
         "image": "assets/image/f13.png",
+        "subtitles": "assets/srt/file13.srt",
         "questions": [
           {
             "type": "checkbox",
@@ -90,6 +99,7 @@
         "title": "Listening - Level 3 - File 15 - Page 63 - WB",
         "audio": "assets/audio/file15.mp3",
         "image": "assets/image/f15.png",
+        "subtitles": "assets/srt/file15.srt",
         "questions": [
           {
             "type": "text",
@@ -108,6 +118,7 @@
         "title":"Listening - Level 3 - File 94 - Page 71",
         "audio": "assets/audio/file94.mp3",
         "image": "assets/image/f94.png",
+        "subtitles": "assets/srt/file94.srt",
         "answer": ["B" , "C" , "C" , "C" , "A"]
       },
       {
@@ -115,6 +126,7 @@
         "title":"Listening - Level 3 - File 23 - Page 23",
         "audio": "assets/audio/file23.mp3",
         "image": "assets/image/f23.png",
+        "subtitles": "assets/srt/file23.srt",
         "answer": ["wrong" , "right" , "wrong" , "wrong" , "right", "wrong", "right", "right"]
       },
       {
@@ -122,6 +134,7 @@
         "title":"Listening - Level 3 - File 56 - Page 45",
         "audio": "assets/audio/file56.mp3",
         "image": "assets/image/f56.png",
+        "subtitles": "assets/srt/file56.srt",
         "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
       },
       {
@@ -129,28 +142,32 @@
         "title":"Listening - Level 3 - File 116 - Page 89",
         "audio": "assets/audio/file116.mp3",
         "image": "assets/image/f116.png",
-        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+        "subtitles": "assets/srt/file116.srt",
+        "answer": ["wrong" , "wrong" , "right" , "right", "right" , "wrong", "wrong"]
       },
       {
         "id": 153,
         "title":"Listening - Level 3 - File 153 - Page 129",
         "audio": "assets/audio/file153.mp3",
         "image": "assets/image/f153.png",
-        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+        "subtitles": "assets/srt/file153.srt",
+        "answer": ["12.50", "10.20","hughie" , "trousers" , "towel"]
       },
       {
         "id": 155,
         "title":"Listening - Level 3 - File 155 - Page 130",
         "audio": "assets/audio/file155.mp3",
         "image": "assets/image/f155.png",
-        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+        "subtitles": "assets/srt/file155.srt",
+        "answer": ["A" , "B", "A" , "C" , "A"]
       },
       {
         "id": 157,
         "title":"Listening - Level 3 - File 157 - Page 131",
         "audio": "assets/audio/file157.mp3",
         "image": "assets/image/f157.png",
-        "answer": ["28th July" , "16" , "river" , "345" , "05371255946"]
+        "subtitles": "assets/srt/file157.srt",
+        "answer": ["C" , "C" , "A" , "B" , "B"]
       }
   ]
   
