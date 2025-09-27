@@ -159,7 +159,7 @@
         "audio": "assets/audio/file155.mp3",
         "image": "assets/image/f155.png",
         "subtitles": "assets/srt/file155.srt",
-        "answer": ["A" , "B", "A" , "C" , "A"]
+        "answer": ["C" , "B", "A" , "C" , "A"]
       },
       {
         "id": 157,
