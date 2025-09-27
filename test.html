@@ -504,11 +504,11 @@
           devtoolsOpen = true;
           console.clear();
           console.log("DevTools detected - nội dung bị hạn chế.");
-        } else if ((widthThreshold || heightThreshold) && devtoolsOpen){
+        } else if (!(widthThreshold || heightThreshold) && devtoolsOpen) {
           devtoolsOpen = false;
         }
       }, 1000);
-    });
+    })();
   </script>
 </body>
 </html>
