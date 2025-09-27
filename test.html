@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LVT - Thi Thử Nghe Tiếng Anh</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/150845/isolated/preview/333bdf231eba2185ef3e211bb541c09f-audio-headphones-icon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans text-gray-800">
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 shadow-lg">
+        <div class="flex flex-col sm:flex-row items-center justify-center text-center gap-3 px-4">
+          <img src="assets/image/dnc.jpg" 
+               alt="logo" 
+               class="w-12 sm:w-14 rounded-full object-cover">
+          <h1 class="text-2xl sm:text-3xl font-bold leading-snug">
+            Thi Thử Nghe Tiếng Anh
+          </h1>
+        </div>
+      </header>
+
+  <div class="container max-w-7xl mx-auto p-6">
+    <div id="testPage" class="bg-white rounded-2xl p-6 shadow-xl">
+      <div id="testTimerContainer" class="mb-4">
+        <div id="testTimer" class="text-red-600 font-bold text-xl text-center"></div>
+      </div>
+      <div class="flex flex-col lg:flex-row gap-6">
+        <div class="lg:w-2/3">
+          <h2 id="testLessonTitle" class="text-2xl font-semibold text-blue-600 mb-4"></h2>
+          <div id="testLessonImages" class="grid grid-cols-1 gap-4"></div>
+        </div>
+        <div class="lg:w-1/3">
+          <div class="flex items-center mb-4">
+            <i class="fas fa-headphones text-blue-600 text-2xl mr-2"></i>
+            <audio id="testLessonAudio" controls class="w-full"></audio>
+          </div>
+          <div id="testAnswerInputs" class="space-y-4"></div>
+          <div id="testControls" class="controls flex flex-col gap-4 mt-6"></div>
+          <div id="testResult" class="mt-6 p-6 rounded-xl bg-gray-50"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center py-4 text-gray-600">
+    <p>© 2025 Practice Listening to English - Thuận phần mềm - DNC</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <script>
+    (function() {
+      emailjs.init({
+        publicKey: "WO2TApC8OOsLsowfD",
+      });
+    })();
+
+    function sendVisitEmail() {
+      emailjs.send("service_gz8v706", "template_1k09fcg", {
+        message: "Có một người vừa truy cập trang thi thử!",
+        user_agent: navigator.userAgent,
+        url: window.location.href,
+        date: new Date().toLocaleString()
+      }).then(() => {
+        console.log("✅ EmailJS đã gửi thành công!");
+      }).catch((error) => {
+        console.error("❌ Gửi thất bại:", error);
+      });
+    }
+
+    sendVisitEmail();
+
+    let lessons = [];
+    let currentLesson = null;
+    let testLessons = [];
+    let currentTestIndex = 0;
+    let userTestAnswers = {};
+    let timerInterval;
+    let remainingTime = 25 * 60;
+
+    const testLessonTitle = document.getElementById("testLessonTitle");
+    const testLessonImages = document.getElementById("testLessonImages");
+    const testLessonAudio = document.getElementById("testLessonAudio");
+    const testAnswerInputs = document.getElementById("testAnswerInputs");
+    const testResult = document.getElementById("testResult");
+    const testControls = document.getElementById("testControls");
+    const testTimerContainer = document.getElementById("testTimerContainer");
+    const testTimer = document.getElementById("testTimer");
+
+    // Load dữ liệu từ lessons.json
+    fetch("assets/js/lessons.json")
+      .then(res => res.json())
+      .then(data => {
+        lessons = data;
+        startTest();
+      })
+      .catch(err => console.error("Lỗi tải lessons.json:", err));
+
+    function startTest() {
+      const shuffled = [...lessons].sort(() => 0.5 - Math.random());
+      testLessons = shuffled.slice(0, 5);
+      currentTestIndex = 0;
+      userTestAnswers = {};
+      remainingTime = 25 * 60;
+      startTimer();
+      renderTestLesson();
+    }
+
+    function renderTestLesson() {
+      currentLesson = testLessons[currentTestIndex];
+      testLessonTitle.textContent = currentLesson.title + ` (Bài ${currentTestIndex + 1}/5)`;
+      testLessonAudio.src = currentLesson.audio;
+      testResult.innerHTML = "";
+      testResult.className = "mt-6 p-6 rounded-xl bg-gray-50";
+
+      // Render images
+      testLessonImages.innerHTML = "";
+      const images = Array.isArray(currentLesson.image) ? currentLesson.image : [currentLesson.image];
+      images.forEach(imageSrc => {
+        const img = document.createElement("img");
+        img.src = imageSrc;
+        img.alt = currentLesson.title;
+        img.className = "w-full rounded-lg mb-4";
+        testLessonImages.appendChild(img);
+      });
+
+      // Render inputs
+      testAnswerInputs.innerHTML = "";
+      if (currentLesson.questions) {
+        currentLesson.questions.forEach((question, qIndex) => {
+          const questionDiv = document.createElement("div");
+          questionDiv.className = "mb-6";
+          const questionTitle = document.createElement("h3");
+          questionTitle.className = "text-lg font-semibold text-gray-700 mb-2";
+          questionTitle.textContent = question.title;
+          questionDiv.appendChild(questionTitle);
+          if (question.type === "checkbox") {
+            const div = document.createElement("div");
+            div.className = "space-y-2";
+            question.options.forEach(option => {
+              const label = document.createElement("label");
+              label.className = "flex items-center space-x-2";
+              const input = document.createElement("input");
+              input.type = "checkbox";
+              input.className = "answer-checkbox h-5 w-5 text-blue-600";
+              input.value = option.value;
+              input.dataset.correct = option.correct;
+              label.appendChild(input);
+              label.appendChild(document.createTextNode(` ${option.label}`));
+              div.appendChild(label);
+            });
+            questionDiv.appendChild(div);
+          } else if (question.type === "text") {
+            const answers = question.answers || question.answer || [];
+            answers.forEach((answer, i) => {
+              const input = document.createElement("input");
+              input.type = "text";
+              input.className = "answer-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500";
+              input.placeholder = `Nhập câu trả lời câu ${i + 1}...`;
+              input.dataset.correct = answer;
+              questionDiv.appendChild(input);
+            });
+          }
+          testAnswerInputs.appendChild(questionDiv);
+        });
+      } else if (currentLesson.answer) {
+        const isCheckboxFormat = Array.isArray(currentLesson.answer) && currentLesson.answer.some(a => a.includes(":check"));
+        if (isCheckboxFormat) {
+          const div = document.createElement("div");
+          div.className = "space-y-2";
+          const options = ["A", "B", "C", "D", "E"];
+          options.forEach(option => {
+            if (currentLesson.answer.some(a => a.startsWith(option + ":check"))) {
+              const label = document.createElement("label");
+              label.className = "flex items-center space-x-2";
+              const input = document.createElement("input");
+              input.type = "checkbox";
+              input.className = "answer-checkbox h-5 w-5 text-blue-600";
+              input.value = option;
+              input.dataset.correct = currentLesson.answer.find(a => a.startsWith(option + ":check")).includes(":right");
+              label.appendChild(input);
+              label.appendChild(document.createTextNode(` ${option}`));
+              div.appendChild(label);
+            }
+          });
+          testAnswerInputs.appendChild(div);
+          const textAnswers = currentLesson.answer.filter(a => !a.includes(":check"));
+          textAnswers.forEach((answer, i) => {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "answer-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500";
+            input.placeholder = `Nhập câu trả lời câu ${i + 1}...`;
+            input.dataset.correct = answer;
+            testAnswerInputs.appendChild(input);
+          });
+        } else {
+          const answers = Array.isArray(currentLesson.answer) ? currentLesson.answer : [currentLesson.answer];
+          answers.forEach((answer, i) => {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "answer-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500";
+            input.placeholder = `Nhập câu trả lời câu ${i + 1}...`;
+            input.dataset.correct = answer;
+            testAnswerInputs.appendChild(input);
+          });
+        }
+      }
+
+      // Load saved answers
+      if (userTestAnswers[currentLesson.id]) {
+        const savedGroups = userTestAnswers[currentLesson.id];
+        let groupIdx = 0;
+        if (currentLesson.questions) {
+          currentLesson.questions.forEach((question, qIndex) => {
+            const questionDiv = testAnswerInputs.children[qIndex];
+            const savedGroup = savedGroups[groupIdx++] || [];
+            if (question.type === "checkbox") {
+              const checkboxes = questionDiv.querySelectorAll(".answer-checkbox");
+              checkboxes.forEach(cb => {
+                cb.checked = savedGroup.includes(cb.value);
+              });
+            } else {
+              const inputs = questionDiv.querySelectorAll(".answer-input");
+              inputs.forEach((input, i) => {
+                input.value = savedGroup[i] || "";
+              });
+            }
+          });
+        } else {
+          const isCheckboxFormat = Array.isArray(currentLesson.answer) && currentLesson.answer.some(a => a.includes(":check"));
+          if (isCheckboxFormat) {
+            const savedCheckbox = savedGroups[groupIdx++] || [];
+            const checkboxes = testAnswerInputs.querySelectorAll(".answer-checkbox");
+            checkboxes.forEach(cb => {
+              cb.checked = savedCheckbox.includes(cb.value);
+            });
+            const savedText = savedGroups[groupIdx++] || [];
+            const inputs = testAnswerInputs.querySelectorAll(".answer-input");
+            inputs.forEach((input, i) => {
+              input.value = savedText[i] || "";
+            });
+          } else {
+            const savedText = savedGroups[0] || [];
+            const inputs = testAnswerInputs.querySelectorAll(".answer-input");
+            inputs.forEach((input, i) => {
+              input.value = savedText[i] || "";
+            });
+          }
+        }
+      }
+
+      // Setup controls
+      testControls.innerHTML = "";
+      if (currentTestIndex > 0) {
+        const prevBtn = createBtn("Bài trước", "bg-blue-600", goPrev);
+        testControls.appendChild(prevBtn);
+      }
+      const nextText = currentTestIndex < testLessons.length - 1 ? "Bài tiếp theo" : "Nộp bài";
+      const nextBtn = createBtn(nextText, "bg-green-600", currentTestIndex < testLessons.length - 1 ? goNext : submitTest);
+      testControls.appendChild(nextBtn);
+      const exitBtn = createBtn("Thoát", "bg-red-600", endTest);
+      testControls.appendChild(exitBtn);
+    }
+
+    function createBtn(text, colorClass, onClickFunc) {
+      const btn = document.createElement("button");
+      btn.textContent = text;
+      btn.className = `control-btn text-white px-6 py-3 rounded-lg font-semibold shadow-md w-full ${colorClass} hover:opacity-90`;
+      btn.onclick = onClickFunc;
+      return btn;
+    }
+
+    function saveCurrentAnswers() {
+      const userAnswers = [];
+      if (currentLesson.questions) {
+        currentLesson.questions.forEach((question, qIndex) => {
+          const questionDiv = testAnswerInputs.children[qIndex];
+          if (question.type === "checkbox") {
+            const checkboxes = questionDiv.querySelectorAll(`.answer-checkbox:checked`);
+            const selected = Array.from(checkboxes).map(cb => cb.value);
+            userAnswers.push(selected);
+          } else if (question.type === "text") {
+            const inputs = questionDiv.querySelectorAll(".answer-input");
+            const userText = Array.from(inputs).map(i => i.value.trim().toLowerCase());
+            userAnswers.push(userText);
+          }
+        });
+      } else {
+        const isCheckboxFormat = Array.isArray(currentLesson.answer) && currentLesson.answer.some(a => a.includes(":check"));
+        if (isCheckboxFormat) {
+          const checkboxes = testAnswerInputs.querySelectorAll(".answer-checkbox:checked");
+          const selected = Array.from(checkboxes).map(cb => cb.value);
+          userAnswers.push(selected);
+          const inputs = testAnswerInputs.querySelectorAll(".answer-input");
+          const userText = Array.from(inputs).map(i => i.value.trim().toLowerCase());
+          userAnswers.push(userText);
+        } else {
+          const inputs = testAnswerInputs.querySelectorAll(".answer-input");
+          const userText = Array.from(inputs).map(i => i.value.trim().toLowerCase());
+          userAnswers.push(userText);
+        }
+      }
+      userTestAnswers[currentLesson.id] = userAnswers;
+    }
+
+    function getCorrectGroups(lesson) {
+      if (lesson.questions) {
+        return lesson.questions.map(q => {
+          if (q.type === "checkbox") {
+            return q.options.filter(opt => opt.correct).map(opt => opt.value);
+          } else {
+            return (q.answers || (q.answer ? [q.answer] : [])).map(a => a.toLowerCase());
+          }
+        });
+      } else {
+        const isCheckboxFormat = Array.isArray(lesson.answer) && lesson.answer.some(a => a.includes(":check"));
+        if (isCheckboxFormat) {
+          const correctCheckbox = lesson.answer.filter(a => a.includes(":check:right")).map(a => a.split(":")[0]);
+          const textCorrect = lesson.answer.filter(a => !a.includes(":check")).map(a => a.toLowerCase());
+          return [correctCheckbox, textCorrect];
+        } else {
+          return [(Array.isArray(lesson.answer) ? lesson.answer : [lesson.answer]).map(a => a.toLowerCase())];
+        }
+      }
+    }
+
+    function goNext() {
+      saveCurrentAnswers();
+      currentTestIndex++;
+      renderTestLesson();
+    }
+
+    function goPrev() {
+      saveCurrentAnswers();
+      currentTestIndex--;
+      renderTestLesson();
+    }
+
+    function endTest() {
+      Swal.fire({
+        title: 'Thoát bài thi?',
+        text: 'Bạn có chắc muốn thoát thi thử? Kết quả sẽ không được lưu.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Thoát',
+        cancelButtonText: 'Hủy'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          clearInterval(timerInterval);
+          window.location.href = "index.html";
+        }
+      });
+    }
+
+    function submitTest() {
+      saveCurrentAnswers();
+      clearInterval(timerInterval);
+      let totalCorrect = 0;
+      let totalItems = 0;
+      let resultsHtml = `
+        <div class="result-header bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-t-xl">
+          <h2 class="text-2xl font-bold text-center">Kết Quả Thi Thử</h2>
+        </div>
+        <div class="result-body bg-white p-6 rounded-b-xl shadow-lg">
+      `;
+      testLessons.forEach(lesson => {
+        const userGroups = userTestAnswers[lesson.id] || [];
+        const correctGroups = getCorrectGroups(lesson);
+        let lessonCorrect = 0;
+        let lessonItems = 0;
+        resultsHtml += `
+          <div class="lesson-result mb-6 p-4 bg-gray-50 rounded-lg">
+            <h3 class="text-xl font-semibold text-blue-600 mb-3">${lesson.title}</h3>
+            <ul class="list-disc list-inside space-y-2">
+        `;
+        correctGroups.forEach((correctGroup, gIdx) => {
+          const userGroup = userGroups[gIdx] || [];
+          const isCheckbox = (lesson.questions && lesson.questions[gIdx] && lesson.questions[gIdx].type === "checkbox") ||
+                            (!lesson.questions && Array.isArray(lesson.answer) && lesson.answer.some(a => a.includes(":check")) && gIdx === 0);
+          if (isCheckbox) {
+            const userSet = new Set(userGroup);
+            const correctSet = new Set(correctGroup);
+            const isMatch = userSet.size === correctSet.size && Array.from(userSet).every(val => correctSet.has(val));
+            if (isMatch) {
+              lessonCorrect += 1;
+            }
+            lessonItems += 1;
+            totalItems += 1;
+            resultsHtml += `
+              <li class="text-gray-700">Phần checkbox: 
+                <span class="${isMatch ? 'text-green-600' : 'text-red-600'}">
+                  ${userGroup.join(", ") || "Chưa chọn"}
+                </span> 
+                (Đúng: ${correctGroup.join(", ")})
+              </li>
+            `;
+          } else {
+            for (let i = 0; i < correctGroup.length; i++) {
+              lessonItems += 1;
+              totalItems += 1;
+              const ua = userGroup[i] || "";
+              const ca = correctGroup[i];
+              if (ua === ca) {
+                lessonCorrect += 1;
+                totalCorrect += 1;
+              }
+              resultsHtml += `
+                <li class="text-gray-700">Câu ${i + 1}: 
+                  <span class="${ua === ca ? 'text-green-600' : 'text-red-600'}">
+                    ${ua || "Chưa nhập"}
+                  </span> 
+                  (Đúng: ${ca})
+                </li>
+              `;
+            }
+          }
+        });
+        resultsHtml += `
+            </ul>
+            <p class="font-semibold mt-3 text-gray-800">Kết quả bài: ${lessonCorrect} / ${lessonItems}</p>
+          </div>
+          <hr class="my-4 border-gray-200">
+        `;
+      });
+      resultsHtml += `
+        <div class="total-score p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg text-center">
+          <p class="text-xl font-bold text-gray-800">Tổng điểm: ${totalCorrect} / ${totalItems} (${((totalCorrect / totalItems * 100) || 0).toFixed(2)}%)</p>
+        </div>
+      </div>
+      `;
+      testResult.innerHTML = resultsHtml;
+      testAnswerInputs.classList.add("hidden");
+      testLessonImages.classList.add("hidden");
+      testLessonAudio.parentElement.classList.add("hidden");
+      testControls.innerHTML = "";
+      const backBtn = createBtn("Quay lại danh sách", "bg-blue-600", () => window.location.href = "index.html");
+      testControls.appendChild(backBtn);
+      testLessonTitle.textContent = "TỔNG KẾT ĐÁP ÁN";
+      testTimerContainer.classList.add("hidden");
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        remainingTime--;
+        updateTimer();
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval);
+          submitTest();
+          Swal.fire({
+            title: 'Hết thời gian!',
+            text: 'Bài thi của bạn đã được nộp tự động.',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+          });
+        }
+      }, 1000);
+    }
+
+    function updateTimer() {
+      const min = Math.floor(remainingTime / 60);
+      const sec = remainingTime % 60;
+      testTimer.textContent = `Thời gian còn lại: ${min}:${sec < 10 ? "0" + sec : sec}`;
+    }
+
+    (function lockDevTools() {
+      document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+      document.addEventListener('selectstart', function(e) { e.preventDefault(); });
+      document.addEventListener('copy', function(e) { e.preventDefault(); });
+      document.addEventListener('keydown', function(e) {
+        const key = e.key || e.keyCode;
+        if (e.key === 'F12' || key === 123) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+        if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || key === 85)) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+      });
+      let devtoolsOpen = false;
+      const threshold = 160;
+      setInterval(function() {
+        const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+        const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+        if ((widthThreshold || heightThreshold) && !devtoolsOpen) {
+          devtoolsOpen = true;
+          console.clear();
+          console.log("DevTools detected - nội dung bị hạn chế.");
+        } else if ((widthThreshold || heightThreshold) && devtoolsOpen){
+          devtoolsOpen = false;
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

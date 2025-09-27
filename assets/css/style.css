@@ -16,6 +16,11 @@
     from { transform: scale(1); box-shadow: 0 0 0 rgba(59, 130, 246, 0); }
     to { transform: scale(1.02); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
 }
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
 
 /* Animation classes */
 .animate-result-correct {
@@ -33,18 +38,18 @@
     border-radius: 12px;
     padding: 1.5rem;
     cursor: pointer;
-    border: 2px solid transparent; /* Default border */
+    border: 2px solid transparent;
 }
 
 .lesson-card:hover {
     transform: translateY(-5px);
-    border-color: #3b82f6; /* Blue border on hover */
+    border-color: #3b82f6;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .lesson-card.selected {
-    border-color: #2563eb; /* Darker blue for selected state */
-    background-color: #eff6ff; /* Light blue background for selected */
+    border-color: #2563eb;
+    background-color: #eff6ff;
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
@@ -65,7 +70,7 @@
 }
 
 /* Main container adjustments */
-#lessonPage {
+#lessonPage, #testPage {
     padding: 2rem;
 }
 
@@ -75,21 +80,21 @@
 }
 
 /* Separator between images and answers */
-#lessonImages {
+#lessonImages, #testLessonImages {
     margin-bottom: 2rem;
     border-bottom: 2px solid #e5e7eb;
     padding-bottom: 1rem;
 }
 
 /* Styling for answer inputs and sections */
-#answerInputs {
+#answerInputs, #testAnswerInputs {
     margin-top: 2rem;
     margin-bottom: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid #e5e7eb;
 }
 
-#answerInputs > div {
+#answerInputs > div, #testAnswerInputs > div {
     margin-bottom: 2rem;
     padding: 1.5rem;
     background-color: #f9fafb;
@@ -99,7 +104,7 @@
     position: relative;
 }
 
-#answerInputs > div::before {
+#answerInputs > div::before, #testAnswerInputs > div::before {
     content: '';
     position: absolute;
     top: 0;
@@ -110,13 +115,13 @@
     border-radius: 12px 12px 0 0;
 }
 
-#answerInputs > div:hover {
+#answerInputs > div:hover, #testAnswerInputs > div:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     border-color: #3b82f6;
 }
 
-#answerInputs h3 {
+#answerInputs h3, #testAnswerInputs h3 {
     font-size: 1.25rem;
     font-weight: 600;
     color: #1e40af;
@@ -181,6 +186,11 @@
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .control-btn {
@@ -193,8 +203,8 @@
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-width: 120px;
-    justify-content: center;
+    min-width: 150px; /* Adjusted for better spacing */
+    text-align: center;
 }
 
 .control-btn::before {
@@ -216,11 +226,10 @@
     animation: buttonHover 0.3s ease forwards;
 }
 
-/* Remove box-shadow from check-btn */
 .check-btn {
     background: linear-gradient(45deg, #2563eb, #60a5fa);
     color: white;
-    box-shadow: none; /* Loại bỏ bóng đổ */
+    box-shadow: none;
 }
 
 .reset-btn {
@@ -238,40 +247,127 @@
     color: white;
 }
 
+/* Test button styling */
+.test-btn {
+    background: linear-gradient(45deg, #16a34a, #22c55e);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.test-btn:hover {
+    background: linear-gradient(45deg, #15803d, #16a34a);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.test-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.test-btn:hover::after {
+    opacity: 1;
+}
+
 /* Audio styling */
-#lessonAudio {
+#lessonAudio, #testLessonAudio {
     margin-top: 0.5rem;
 }
 
-/* Result styling */
-#result {
+/* Enhanced result styling */
+#result, #testResult {
     margin-top: 2rem;
-    padding: 1.5rem;
+    padding: 0;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
 }
 
-/* Subtitle styling */
-#subtitleDisplay {
-    transition: all 0.3s ease;
-    max-height: 0;
-    overflow: hidden;
+.result-header {
+    background: linear-gradient(45deg, #2563eb, #60a5fa);
+    padding: 1.5rem;
+    border-radius: 12px 12px 0 0;
+    text-align: center;
 }
 
-#subtitleDisplay:not(.hidden) {
-    max-height: 500px;
+.result-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
 }
 
-#subtitleDisplay h3 {
-    color: #374151;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 0.5rem;
+.result-body {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0 0 12px 12px;
+}
+
+.lesson-result {
+    background: #f9fafb;
+    padding: 1rem;
+    border-radius: 8px;
     margin-bottom: 1rem;
 }
 
-#subtitleText {
-    font-family: 'Courier New', monospace;
-    line-height: 1.6;
+.lesson-result h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 0.75rem;
+}
+
+.lesson-result ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.lesson-result li {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #374151;
+}
+
+.lesson-result li span.text-green-600 {
+    font-weight: 600;
+}
+
+.lesson-result li span.text-red-600 {
+    font-weight: 600;
+}
+
+.total-score {
+    background: linear-gradient(45deg, #ecfdf5, #dbeafe);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.total-score p {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* Timer styling */
+#testTimer {
+    background: linear-gradient(45deg, #ef4444, #f87171);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Fix footer at the bottom */
@@ -290,32 +386,17 @@ footer {
 }
 
 /* Responsive design */
-@media (max-width: 1024px) {
-    .flex.flex-col.lg\:flex-row {
-        flex-direction: column;
-    }
-    
-    .lg\:w-2\/3, .lg\:w-1\/3 {
-        width: 100%;
-    }
-    
-    .lg\:w-1\/3 {
-        padding-left: 0;
-        margin-top: 2rem;
-    }
-}
-
 @media (max-width: 640px) {
-    #lessonPage {
+    #lessonPage, #testPage {
         padding: 1rem;
     }
     
-    #answerInputs > div {
+    #answerInputs > div, #testAnswerInputs > div {
         padding: 1rem;
         margin-bottom: 1.5rem;
     }
     
-    #answerInputs h3 {
+    #answerInputs h3, #testAnswerInputs h3 {
         font-size: 1.1rem;
     }
     
@@ -335,23 +416,36 @@ footer {
         gap: 0.75rem;
     }
     
-    #answerInputs {
+    .test-btn {
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 1rem;
+    }
+    
+    #answerInputs, #testAnswerInputs {
         margin-top: 1.5rem;
     }
     
-    #lessonImages {
+    #lessonImages, #testLessonImages {
         margin-bottom: 1.5rem;
     }
 
-    .subtitle-btn {
-        width: 100%;
-        margin-bottom: 1rem;
+    .result-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .lesson-result h3 {
+        font-size: 1.1rem;
+    }
+
+    .total-score p {
+        font-size: 1.1rem;
     }
 }
 
 /* Additional spacing for mobile landscape */
 @media (max-width: 768px) and (orientation: landscape) {
-    #answerInputs {
+    #answerInputs, #testAnswerInputs {
         margin-top: 1rem;
     }
     
@@ -359,3 +453,26 @@ footer {
         margin-top: 1rem;
     }
 }
+
+.marquee-container {
+    background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+    padding: 0.75rem 0;
+    overflow: hidden;
+    border-bottom: 1px solid #d1d5db;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  .marquee-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+    font-size: 1rem;
+    color: #374151;
+    font-weight: 500;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .marquee-text:hover {
+    animation-play-state: paused;
+  }
