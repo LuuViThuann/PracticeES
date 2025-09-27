@@ -65,22 +65,29 @@
     <p>© 2025 Practice Listening to English - Thuận phần mềm - DNC</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
   <script>
       //
       (function() {
-    emailjs.init("bGlLdgP91zmfcVxzm");
+    emailjs.init({
+      publicKey: "WO2TApC8OOsLsowfD",
+    });
   })();
 
   function sendVisitEmail() {
     emailjs.send("service_gz8v706", "template_1k09fcg", {
       message: "Có một người vừa truy cập website!",
       user_agent: navigator.userAgent,
-      url: window.location.href
+      url: window.location.href,
+      date: new Date().toLocaleString()
+    }).then(() => {
+      console.log("✅ EmailJS đã gửi thành công!");
+    }).catch((error) => {
+      console.error("❌ Gửi thất bại:", error);
     });
   }
 
-  // Gửi 1 lần sau khi người dùng vào trang
   sendVisitEmail();
       //
 
