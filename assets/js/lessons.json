@@ -168,6 +168,16 @@
         "image": "assets/image/f157.png",
         "subtitles": "assets/srt/file157.srt",
         "answer": ["C" , "C" , "A" , "B" , "B"]
+      },
+      {
+        "id": 48,
+        "title":"Đáp án có sẵn - file 48",       
+        "image": "assets/image/48.png"     
+      },
+      {
+        "id": 8,
+        "title":"Đáp án có sẵn - File 8 ",      
+        "image": "assets/image/8.png"      
       }
   ]
   
